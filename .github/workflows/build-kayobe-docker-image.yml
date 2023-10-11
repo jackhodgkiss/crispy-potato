@@ -8,6 +8,8 @@ env:
   KAYOBE_USER_GID: 1000
 
 jobs:
+  prepare-runner:
+    uses: ./.github/workflows/prepare-runner.yml
   build-kayobe-docker-image:
     runs-on: ['kayobe', 'openstack']
     container:
@@ -15,6 +17,7 @@ jobs:
     permissions:
       contents: read
       packages: none
+    needs: prepare-runner
     steps:
       - name: Checkout kayobe config
         uses: actions/checkout@v3
@@ -41,6 +44,6 @@ jobs:
              BASE_IMAGE=quay.io/rockylinux/rockylinux:9
           push: true
           tags: |
-            pulp.infra.os.hodgkiss.cloud/kayobe:latest
+            pulp.infra.os.hodgkiss.cloud/kayobe:${{ needs.prepare-runner.outputs.openstack_release }}-latest
             pulp.infra.os.hodgkiss.cloud/kayobe:${{ github.sha }}
           provenance: false

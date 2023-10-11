@@ -17,6 +17,8 @@ on:
           The ansible tags to use when running kayobe playbooks.
 
 jobs:
+  prepare-runner:
+    uses: ./.github/workflows/prepare-runner.yml
   run-overcloud-service-deploy:
     runs-on: ['kayobe', 'openstack']
     permissions:
@@ -24,7 +26,7 @@ jobs:
       packages: none
       pull-requests: write
     container:
-      image: pulp.infra.os.hodgkiss.cloud/kayobe:latest
+      image: pulp.infra.os.hodgkiss.cloud/kayobe:${{ needs.prepare-runner.outputs.openstack_release }}-latest
       credentials:
         username: admin
         password: ${{ secrets.REGISTRY_PASSWORD }}
@@ -32,6 +34,7 @@ jobs:
       group: overcloud
       cancel-in-progress: false
     timeout-minutes: 360
+    needs: prepare-runner
     steps:
       - name: Checkout kayobe config
         uses: actions/checkout@v3

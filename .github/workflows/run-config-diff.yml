@@ -8,16 +8,19 @@ on:
   pull_request:
 
 jobs:
+  prepare-runner:
+    uses: ./.github/workflows/prepare-runner.yml
   run-config-diff:
     runs-on: ['kayobe', 'openstack']
     permissions:
       contents: read
       packages: none
     container:
-      image: pulp.infra.os.hodgkiss.cloud/kayobe:latest
+      image: pulp.infra.os.hodgkiss.cloud/kayobe:${{ needs.prepare-runner.outputs.openstack_release }}-latest
       credentials:
         username: admin
         password: ${{ secrets.REGISTRY_PASSWORD }}
+    needs: prepare-runner
     steps:
       - name: Checkout kayobe config
         uses: actions/checkout@v3
