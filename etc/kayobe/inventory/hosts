@@ -33,3 +33,12 @@ controllers
 controllers
 
 [rgws]
+
+[github-runner]
+operations-01
+
+[github-writer]
+localhost
+
+[tempest_runner]
+operations-01
