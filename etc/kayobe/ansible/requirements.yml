@@ -1,0 +1,16 @@
+---
+collections:
+  - name: stackhpc.cephadm
+    version: 1.14.0
+  - name: https://github.com/stackhpc/ansible-collection-kayobe-workflows.git
+    version: github-mult-env
+    type: git
+
+roles:
+  - name: geerlingguy.pip
+  - name: monolithprojects.github_actions_runner
+    src: https://github.com/jackhodgkiss/ansible-github_actions_runner.git
+    version: use-ansible-facts
+  - name: geerlingguy.docker
+    src: https://github.com/jackhodgkiss/ansible-role-docker.git
+    version: use-ansible-facts
