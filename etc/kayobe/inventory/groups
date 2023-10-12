@@ -58,6 +58,9 @@ monitoring
 storage
 compute
 
+[skyline:children]
+controllers
+
 ###############################################################################
 # Service groups.
 
