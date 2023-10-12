@@ -19,13 +19,15 @@ on:
           Limit tests to this regex. Takes precedence over testSuite.
 
 jobs:
+  prepare-runner:
+    uses: ./.github/workflows/prepare-runner.yml
   run-tempest:
     runs-on: ['kayobe', 'openstack']
     permissions:
       contents: read
       packages: none
     container:
-      image: pulp.infra.os.hodgkiss.cloud/kayobe:latest
+      image: pulp.infra.os.hodgkiss.cloud/kayobe:${{ needs.prepare-runner.outputs.openstack_release }}-latest
       credentials:
         username: admin
         password: ${{ secrets.REGISTRY_PASSWORD }}
@@ -33,6 +35,7 @@ jobs:
       group: tempest
       cancel-in-progress: false
     timeout-minutes: 360
+    needs: prepare-runner
     steps:
       - name: Checkout kayobe config
         uses: actions/checkout@v3
